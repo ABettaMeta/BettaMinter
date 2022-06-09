@@ -1,6 +1,6 @@
 BETTASEA
 
-This repo contains all the files to implement the BETTASea Front End Design using React + CSS and Bootstrap.
+This repo contains all the files to implement the BettaSea Front End Design using React + CSS and Bootstrap.
 
 ** USE AT YOUR OWN RISK** **NOT RESPONSIBLE FOR ANY USE, ISSUES ETC.. **
 
