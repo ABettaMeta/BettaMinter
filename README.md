@@ -2,7 +2,7 @@ BettaMinter
 
 This repo contains all the files needed to implement the BettaMinter Front End Design using React + CSS and Bootstrap.
 
-** USE AT YOUR OWN RISK** **NOT RESPONSIBLE FOR ANY USE, ISSUES ETC.. **
+** USE AT YOUR OWN RISK** **NOT RESPONSIBLE FOR ANY ISSUES!! **
 
 1.) Install Dependencies:
 npm i bootstrap@5.2.0-beta1
