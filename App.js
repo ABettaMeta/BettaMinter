@@ -5,9 +5,8 @@ import React, { Component } from 'react';
 import 'sf-font';
 import axios from 'axios';
 import ABI from './ABI.json';
-import VAULTABI from './VAULTABI.json';
 import TOKENABI from './TOKENABI.json';
-import { NFTCONTRACT, STAKINGCONTRACT, polygonscanapi, moralisapi, nftpng } from './config';
+import { NFTCONTRACT, bscscanapi, moralisapi, nftpng } from './config';
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import WalletLink from "walletlink";
@@ -16,13 +15,12 @@ import { createAlchemyWeb3 } from '@alch/alchemy-web3';
 
 var account = null;
 var contract = null;
-var vaultcontract = null;
 var web3 = null;
 
 const Web3Alc = createAlchemyWeb3("https://eth-rinkeby.alchemyapi.io/v2/8AX5AP2TU6G45ctsOXNt8K4Fz_BkhhZG");
 
 const moralisapikey = "2VBV4vaCLiuGu6Vu7epXKlFItGe3jSPON8WV4CrXKYaNBEazEUrf1xwHxbrIo1oM";
-const polygonscanapikey = "DBQX5JUSAVUZRK8CC4IN2UZF9N2HA63P4U";
+const bscscanapikey = "DBQX5JUSAVUZRK8CC4IN2UZF9N2HA63P4U";
 
 const providerOptions = {
 	binancechainwallet: {
@@ -48,7 +46,7 @@ const providerOptions = {
 };
 
 const web3Modal = new Web3Modal({
-	network: "rinkeby",
+	network: "Binance",
 	theme: "dark",
 	cacheProvider: true,
 	providerOptions 
@@ -73,7 +71,7 @@ class App extends Component {
 
 	async componentDidMount() {
 		
-		await axios.get((polygonscanapi + `?module=stats&action=tokensupply&contractaddress=${NFTCONTRACT}&apikey=${polygonscanapikey}`))
+		await axios.get((bscscanapi + `?module=stats&action=tokensupply&contractaddress=${NFTCONTRACT}&apikey=${bscscanapikey}`))
 		.then(outputa => {
             this.setState({
                 balance:outputa.data
@@ -111,27 +109,7 @@ render() {
     account = accounts[0];
     document.getElementById('wallet-address').textContent = account;
     contract = new web3.eth.Contract(ABI, NFTCONTRACT);
-    vaultcontract = new web3.eth.Contract(VAULTABI, STAKINGCONTRACT);
-    var getstakednfts = await vaultcontract.methods.tokensOfOwner(account).call();
-    document.getElementById('yournfts').textContent = getstakednfts;
-    var getbalance = Number(await vaultcontract.methods.balanceOf(account).call());
-    document.getElementById('stakedbalance').textContent = getbalance;
-    const arraynft = Array.from(getstakednfts.map(Number));
-		const tokenid = arraynft.filter(Number);
-		var rwdArray = [];
-    tokenid.forEach(async (id) => {
-      var rawearn = await vaultcontract.methods.earningInfo(account, [id]).call();
-      var array = Array.from(rawearn.map(Number));
-      console.log(array);
-      array.forEach(async (item) => {
-        var earned = String(item).split(",")[0];
-        var earnedrwd = Web3.utils.fromWei(earned);
-        var rewardx = Number(earnedrwd).toFixed(2);
-        var numrwd = Number(rewardx);
-        console.log(numrwd);
-        rwdArray.push(numrwd);
-      });
-    });
+   }
     function delay() {
       return new Promise(resolve => setTimeout(resolve, 300));
     }
@@ -149,35 +127,7 @@ render() {
     return processArray([rwdArray]);
   }
 
-  async function verify() {
-    var getstakednfts = await vaultcontract.methods.tokensOfOwner(account).call();
-    document.getElementById('yournfts').textContent = getstakednfts;
-    var getbalance = Number(await vaultcontract.methods.balanceOf(account).call());
-    document.getElementById('stakedbalance').textContent = getbalance;
   }
-
-  async function enable() {
-    contract.methods.setApprovalForAll(STAKINGCONTRACT, true).send({ from: account });
-  }
-  async function rewardinfo() {
-    var rawnfts = await vaultcontract.methods.tokensOfOwner(account).call();
-    const arraynft = Array.from(rawnfts.map(Number));
-    const tokenid = arraynft.filter(Number);
-    var rwdArray = [];
-    tokenid.forEach(async (id) => {
-      var rawearn = await vaultcontract.methods.earningInfo(account, [id]).call();
-      var array = Array.from(rawearn.map(Number));
-      array.forEach(async (item) => {
-        var earned = String(item).split(",")[0];
-        var earnedrwd = Web3.utils.fromWei(earned);
-        var rewardx = Number(earnedrwd).toFixed(2);
-        var numrwd = Number(rewardx);
-        rwdArray.push(numrwd)
-      });
-    });
-    function delay() {
-      return new Promise(resolve => setTimeout(resolve, 300));
-    }
     async function delayedLog(item) {
       await delay();
       var sum = item.reduce((a, b) => a + b, 0);
@@ -202,26 +152,6 @@ render() {
         var maxFee = maxPriority + baseFee;
         tokenid.forEach(async (id) => {
           await vaultcontract.methods.claim([id])
-            .send({
-              from: account,
-              maxFeePerGas: maxFee,
-              maxPriorityFeePerGas: maxPriority
-            })
-        })
-      });
-    })
-  }
-  async function unstakeall() {
-    var rawnfts = await vaultcontract.methods.tokensOfOwner(account).call();
-    const arraynft = Array.from(rawnfts.map(Number));
-    const tokenid = arraynft.filter(Number);
-    await Web3Alc.eth.getMaxPriorityFeePerGas().then((tip) => {
-      Web3Alc.eth.getBlock('pending').then((block) => {
-        var baseFee = Number(block.baseFeePerGas);
-        var maxPriority = Number(tip);
-        var maxFee = maxPriority + baseFee;
-        tokenid.forEach(async (id) => {
-          await vaultcontract.methods.unstake([id])
             .send({
               from: account,
               maxFeePerGas: maxFee,
@@ -384,115 +314,6 @@ const refreshPage = ()=>{
           </form>
           </body>
           </div>
-        <div className='col'>
-          <body className='nftstaker border-0'>
-            <form  style={{ fontFamily: "SF Pro Display" }} >
-              <h2 style={{ borderRadius: '14px', fontWeight: "300", fontSize: "25px" }}>N2DR NFT Staking Vault </h2>
-              <h6 style={{ fontWeight: "300" }}>First time staking?</h6>
-              <Button className="btn" onClick={enable} style={{ backgroundColor: "#ffffff10", boxShadow: "1px 1px 5px #000000" }} >Authorize Your Wallet</Button>
-              <div className="row px-3">
-                <div className="col">
-                  <form class="stakingrewards" style={{ borderRadius: "25px", boxShadow: "1px 1px 15px #ffffff" }}>
-                    <h5 style={{ color: "#FFFFFF", fontWeight: '300' }}>Your Vault Activity</h5>
-                    <h6 style={{ color: "#FFFFFF" }}>Verify Staked Amount</h6>
-                    <Button onClick={verify} style={{ backgroundColor: "#ffffff10", boxShadow: "1px 1px 5px #000000" }} >Verify</Button>
-                    <table className='table mt-3 mb-5 px-3 table-dark'>
-                      <tr>
-                        <td style={{ fontSize: "19px" }}>Your Staked NFTs:
-                          <span style={{ backgroundColor: "#ffffff00", fontSize: "21px", color: "#39FF14", fontWeight: "500", textShadow: "1px 1px 2px #000000" }} id='yournfts'></span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style={{ fontSize: "19px" }}>Total Staked NFTs:
-                          <span style={{ backgroundColor: "#ffffff00", fontSize: "21px", color: "#39FF14", fontWeight: "500", textShadow: "1px 1px 2px #000000" }} id='stakedbalance'></span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style={{ fontSize: "19px" }}>Unstake All Staked NFTs
-                          <Button onClick={unstakeall} className='mb-3' style={{ backgroundColor: "#ffffff10", boxShadow: "1px 1px 5px #000000" }}>Unstake All</Button>
-                        </td>
-                      </tr>
-                    </table>
-                  </form>
-                  </div>
-                  <img className="col-lg-4" src="art.png"/>
-                  <div className="col">
-                    <form className='stakingrewards' style={{ borderRadius: "25px", boxShadow: "1px 1px 15px #ffffff", fontFamily: "SF Pro Display" }}>
-                      <h5 style={{ color: "#FFFFFF", fontWeight: '300' }}> Staking Rewards</h5>
-                      <Button onClick={rewardinfo} style={{ backgroundColor: "#ffffff10", boxShadow: "1px 1px 5px #000000" }} >Earned N2D Rewards</Button>
-                      <div id='earned' style={{ color: "#39FF14", marginTop: "5px", fontSize: '25px', fontWeight: '500', textShadow: "1px 1px 2px #000000" }}><p style={{ fontSize: "20px" }}>Earned Tokens</p></div>
-                      <div className='col-12 mt-2'>
-                        <div style={{ color: 'white' }}>Claim Rewards</div>
-                        <Button onClick={claimit} style={{ backgroundColor: "#ffffff10", boxShadow: "1px 1px 5px #000000" }} className="mb-2">Claim</Button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                <div className="row px-4 pt-2">
-                  <div class="header">
-                    <div style={{ fontSize: '25px', borderRadius: '14px', color: "#ffffff", fontWeight: "300" }}>N2DR NFT Staking Pool Active Rewards</div>
-                    <table className='table px-3 table-bordered table-dark'>
-                      <thead className='thead-light'>
-                        <tr>
-                          <th scope="col">Collection</th>
-                          <th scope="col">Rewards Per Day</th>
-                          <th scope="col">Exchangeable Items</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>N2D Bronze Collection</td>
-                          <td class="amount" data-test-id="rewards-summary-ads">
-                            <span class="amount">0.50</span>&nbsp;<span class="currency">N2DR</span>
-                          </td>
-                          <td class="exchange">
-                            <span class="amount">2</span>&nbsp;<span class="currency">NFTs/M</span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>N2D Silver Collection</td>
-                          <td class="amount" data-test-id="rewards-summary-ac">
-                            <span class="amount">2.50</span>&nbsp;<span class="currency">N2DR</span>
-                          </td>
-                          <td class="exchange"><span class="amount">10</span>&nbsp;<span class="currency">NFTs/M</span>
-                          </td>
-                        </tr>
-                        <tr className='stakegoldeffect'>
-                          <td>N2D Gold Collection</td>
-                          <td class="amount" data-test-id="rewards-summary-one-time"><span class="amount">1</span>&nbsp;<span class="currency">N2DR+</span>
-                          </td>
-                          <td class="exchange">
-                            <span class="amount">25 NFTs/M or </span>
-                            <span class="currency">100 N2DR/M</span>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-
-                    <div class="header">
-                      <div style={{ fontSize: '25px', borderRadius: '14px', fontWeight: '300' }}>N2DR Token Stake Farms</div>
-                      <table className='table table-bordered table-dark' style={{ borderRadius: '14px' }} >
-                        <thead className='thead-light'>
-                          <tr>
-                            <th scope="col">Farm Pools</th>
-                            <th scope="col">Harvest Daily Earnings</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Stake N2DR to Earn N2DR</td>
-                            <td class="amount" data-test-id="rewards-summary-ads">
-                              <span class="amount">0.01</span>&nbsp;<span class="currency">Per N2DR</span>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>Stake N2DR to Earn N2DR+</td>
-                            <td class="amount" data-test-id="rewards-summary-ac">
-                              <span class="amount">0.005</span>&nbsp;<span class="currency">Per N2DR</span>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
                     </div>
                   </div>
                 </div>
