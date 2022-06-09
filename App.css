@@ -54,7 +54,7 @@
 }
 
 .nftapp {
-  background: radial-gradient(circle at 50% 50%, #5e99ac, #508aa3, #35678f, #1f457a, #173771);
+  background-image: url("../public/skinny.jpg");
 }
 
 @-webkit-keyframes AnimationName {
@@ -89,40 +89,21 @@
 }
 
 .nftminter {
-    background: radial-gradient(circle at 50% 50%, #090f11, #0c1519, #101e2b, #0f223c, #0e2144);
-    font-family: "SF Pro Display";
-    font-weight: 300;
-    color: white;
-    box-shadow: 0 0 1px 1px #17b2ff;
-    -webkit-border-radius: 20px !important;
-    -moz-border-radius: 20px !important;
-    border-radius: 20px !important;
-    -webkit-border: 20px !important;
-    -moz-border: 20px !important;
-    border: 20px !important;
-}
-
-.nftstaker {
-  background: radial-gradient(circle at 50% 50%, #090f11, #0c1519, #101e2b, #0f223c, #0e2144);
+  background: url("../public/water.gif");
+  background-size: 100% 100%;
+  -webkit-animation: AnimationName 14s ease infinite;
+  -moz-animation: AnimationName 14s ease infinite;
+  animation: AnimationName 14s ease infinite;
   font-family: "SF Pro Display";
   font-weight: 300;
   color: white;
-  display: flex;
-  justify-content: center;
-  box-shadow: 0 0 1px 1px #17b2ff;
+  box-shadow: 0 0 1px 1px #32b558;
   -webkit-border-radius: 20px !important;
   -moz-border-radius: 20px !important;
   border-radius: 20px !important;
   -webkit-border: 20px !important;
   -moz-border: 20px !important;
   border: 20px !important;
-}
-
-.stakingrewards {
-    font-family: "SF Pro Display";
-    font-weight: 300;
-    box-shadow: 1px 1px 15px #ffffff;
-    background: radial-gradient(circle at 50% 50%, #000000, #050604, #0a0c08, #0f130b, #14190f, #191f13, #1e2517, #232b1b, #28321e, #2d3822, #323e26);
 }
 
 .modal-style1 {
@@ -155,17 +136,6 @@
   to {
     box-shadow: 0 0 10px 7px #ffb300;
   }
-}
-
-.stakegoldeffect {
-    font-family: "SF Pro Display";
-    font-weight: 300;
-    animation: glow2 3s infinite alternate;
-    background: linear-gradient(
-      to bottom,
-      rgb(1, 53, 130),
-      rgba(255, 0, 0, 0)
-    )
 }
 
 .errorsearch {
@@ -209,31 +179,4 @@ background-image: linear-gradient( 112.1deg,  rgba(32,38,57,1) 11.4%, rgba(63,76
 
 .nftportal {
   background: #161616;
-}
-
-.stakedcard {
-  background: linear-gradient(270deg, #0c0c0c, #f21d1d);
-  background-size: 400% 400%;
-    -webkit-animation: AnimationStake 14s ease infinite;
-    -moz-animation: AnimationStake 14s ease infinite;
-    animation: AnimationStake 14s ease infinite;
-    font-family: "SF Pro Display";
-    color: rgb(255, 255, 255);
-    box-shadow: 1px 1px 11px #FFD700;
-  }
-
-@-webkit-keyframes AnimationStake {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-}
-@-moz-keyframes AnimationStake {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-}
-@keyframes AnimationStake {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
 }
