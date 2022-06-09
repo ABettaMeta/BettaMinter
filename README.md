@@ -20,17 +20,13 @@ npm i walletlink
 
 npm i web3
 
-*Fix Webpack limitation for Web3js: https://www.youtube.com/watch?v=IHrcFo1MX60
+npm i axios
 
-2.) Install Alchemy API module for React. (Make sure you have an Alchemy account and add the info required.)
+*Fix Webpack limitation for Web3js if necessary: https://www.youtube.com/watch?v=IHrcFo1MX60
 
-npm i @alch/alchemy-web3
+2.) Deploy NFT smart contract 
 
-*Watch Alchemy EIP-1559 integration video if you need to review the steps. Use Alchemy API to transact with EIP-1559: https://www.youtube.com/watch?v=7AvKzJMQlI8
-
-3.) Deploy NFT smart contract (contract repo when done)
-
-4.) Update config.js with all your correct information:
+3.) Update config.js with all your correct information:
 
 Your NFT Collection Smart Contract Address,
 Your BSCscan API Key,
@@ -39,6 +35,6 @@ Your Alchemy API Key
 
 *Replace any other information regarding the mainnet you are using accordingly. In App.js and nft.js replace infura provider ID's for web3Modal provider. Update to the mainnet you are using (if applicable).
 
-5.) Start server "npm run start"
+4.) Start server "npm run start"
 
 *Inspired by Net2Dev
