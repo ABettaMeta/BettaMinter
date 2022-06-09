@@ -30,12 +30,18 @@ npm i axios
 
 
 3.) Fix Webpack limitation for Web3js:
-    - npm uninstall webpack
-    - update "react-scripts" from 5.0.0 to 4.0.3 (or version < 5.0.0) in package.json
-    - delete package-lock.json
-    - npm install webpack@4.44.2
-    - npm install
-    - https://www.youtube.com/watch?v=IHrcFo1MX60 for help
+
+npm uninstall webpack
+
+update "react-scripts" from 5.0.0 to 4.0.3 (or version < 5.0.0) in package.json
+
+delete package-lock.json
+
+npm install webpack@4.44.2
+
+npm install
+
+https://www.youtube.com/watch?v=IHrcFo1MX60 for help
 
 
 4.) Deploy your NFT smart contract 
