@@ -28,9 +28,9 @@ npm i @alch/alchemy-web3
 
 *Watch Alchemy EIP-1559 integration video if you need to review the steps. Use Alchemy API to transact with EIP-1559: https://www.youtube.com/watch?v=7AvKzJMQlI8
 
-3.) Deploy smart contracts
+3.) Deploy NFT smart contract (contract repo when done)
 
-4.) Update config.js with all your particular information:
+4.) Update config.js with all your correct information:
 
 Your NFT Collection Smart Contract Address,
 Your BSCscan API Key,
