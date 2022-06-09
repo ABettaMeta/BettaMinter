@@ -41,7 +41,7 @@ npm install webpack@4.44.2
 
 npm install
 
-https://www.youtube.com/watch?v=IHrcFo1MX60 for help
+*https://www.youtube.com/watch?v=IHrcFo1MX60 for help
 
 
 4.) Deploy your NFT smart contract 
