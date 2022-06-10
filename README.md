@@ -9,8 +9,17 @@ This repo contains all the files needed to implement the BettaMinter Front End D
 
 npx create-react-app "bettaminter"
 
+2.) Open project folder 
 
-2.) Install Dependencies:
+https://github.com/ABettaMeta/BettaMinter.git
+
+3.) Delete package-lock.son & node modules (if in project folder)
+
+4.) Get new node modules & package-lock.json
+
+npm install
+
+5.) Install Dependencies:
 
 npm i bootstrap@5.2.0-beta1
 
@@ -29,7 +38,7 @@ npm i web3
 npm i axios
 
 
-3.) Fix Webpack limitation for Web3js:
+6.) Fix Webpack limitation for Web3js:
 
 npm uninstall webpack
 
@@ -44,10 +53,10 @@ npm install
 *https://www.youtube.com/watch?v=IHrcFo1MX60 for help
 
 
-4.) Deploy your NFT smart contract 
+7.) Deploy your NFT smart contract 
 
 
-5.) Update config.js with all the correct information:
+8.) Update config.js with all the correct information:
 
 Your NFT Collection Smart Contract Address,
 Your BSCscan API Key,
@@ -57,7 +66,7 @@ Your Alchemy API Key
 *Replace any other information regarding the mainnet you are using accordingly. In App.js and nft.js replace infura provider ID's for web3Modal provider. Update to the mainnet you are using (if applicable).
 
 
-6.) Start your server
+9.) Start your server
 
 npm run start
 
