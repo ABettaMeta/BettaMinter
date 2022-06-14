@@ -31,7 +31,7 @@ const providerOptions = {
 		  appName: "BettaMinter", 
 		  infuraId: "3cf2d8833a2143b795b7796087fff369",
 		  rpc: "", 
-		  chainId: 4, 
+		  chainId: 56, 
 		  appLogoUrl: null, 
 		  darkMode: true 
 		}
