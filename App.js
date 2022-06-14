@@ -136,45 +136,7 @@ render() {
     var mintRate = await contract.methods.getNFTCost(_pid).call();
     var _mintAmount = Number(outvalue);
     var totalAmount = mintRate * _mintAmount;
-    await Web3.eth.getMaxPriorityFeePerGas().then((tip) => {
-      Web3.eth.getBlock('pending').then((block) => {
-        var baseFee = Number(block.baseFeePerGas);
-        var maxPriority = Number(tip);
-        var maxFee = maxPriority + baseFee;
-        currency.methods.approve(NFTCONTRACT, String(totalAmount))
-					  .send({
-						  from: account})
-              .then(currency.methods.transfer(NFTCONTRACT, String(totalAmount))
-						  .send({
-							  from: account,
-							  maxFeePerGas: maxFee,
-							  maxPriorityFeePerGas: maxPriority
-						  },
-              async function (error, transactionHash) {
-                console.log("Transfer Submitted, Hash: ", transactionHash)
-                let transactionReceipt = null
-                while (transactionReceipt == null) {
-                  transactionReceipt = await web3.eth.getTransactionReceipt(transactionHash);
-                  await sleep(expectedBlockTime)
-                }
-                window.console = {
-                  log: function (str) {
-                    var out = document.createElement("div");
-                    out.appendChild(document.createTextNode(str));
-                    document.getElementById("txout").appendChild(out);
-                  }
-                }
-                console.log("Transfer Complete", transactionReceipt);
-                contract.methods.mintpid(account, _mintAmount, _pid)
-                .send({
-                  from: account,
-                  maxFeePerGas: maxFee,
-                  maxPriorityFeePerGas: maxPriority
-                });
-            }));
-    });
-  });
-}
+  }
 const refreshPage = ()=>{
   window.location.reload();  
 }
