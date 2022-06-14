@@ -14,7 +14,6 @@
 }
 
 .App-header {
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -54,7 +53,7 @@
 }
 
 .nftapp {
-  background-image: url("../public/skinny.jpg");
+  background-image: url("../src/skinny.jpg")
 }
 
 @-webkit-keyframes AnimationName {
@@ -74,13 +73,13 @@
 }
 
 .connectbutton {
-  background: #00000010;
+  background: #ffffff;
   box-shadow: 0px 1px 10px #17b2ff;
-  color: #ffffff;
+  color: #05300b;
   border-radius: 14px;
   padding: 5px 12px;
   font-size: large;
-  font-weight: 200;
+  font-weight: 600;
 }
 
 .navbarfont {
@@ -89,7 +88,7 @@
 }
 
 .nftminter {
-  background: url("../public/water.gif");
+  background: url("../src/water.gif");
   background-size: 100% 100%;
   -webkit-animation: AnimationName 14s ease infinite;
   -moz-animation: AnimationName 14s ease infinite;
@@ -97,7 +96,7 @@
   font-family: "SF Pro Display";
   font-weight: 300;
   color: white;
-  box-shadow: 0 0 1px 1px #32b558;
+  box-shadow: 0 0 1px 1px #17b2ff;
   -webkit-border-radius: 20px !important;
   -moz-border-radius: 20px !important;
   border-radius: 20px !important;
@@ -149,34 +148,3 @@
   box-shadow: 1px 1px 15px #000000;
 }
 
-.navbarglow {
-  box-shadow: 0px 8px 15px #17b2ff;
-}
-.farm {
-  background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(90,92,106,1) 0%, rgba(32,45,58,1) 81.3% );
-  font-family: "SF Pro Display";
-  font-weight: 300;
-  color: rgb(255, 255, 255);
-  box-shadow: 0 0 1px 1px #ffffff;
-    -webkit-border-radius: 20px !important;
-    -moz-border-radius: 20px !important;
-    border-radius: 20px !important;
-    -webkit-border: 20px !important;
-    -moz-border: 20px !important;
-    border: 20px !important;
-}
-.farmcard {
-color: rgb(255, 255, 255);
-font-family: "SF Pro Display";
-font-weight: 300;
-background-image: linear-gradient( 112.1deg,  rgba(32,38,57,1) 11.4%, rgba(63,76,119,1) 70.2% );
-}
-.n2dtitlestyle {
-  color: #ffffff;
-  font-family: "SF Pro Display";
-  font-weight: 300;
-}
-
-.nftportal {
-  background: #161616;
-}
