@@ -11,13 +11,10 @@ import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import WalletLink from "walletlink";
 import Web3 from 'web3';
-import { createAlchemyWeb3 } from '@alch/alchemy-web3';
 
 var account = null;
 var contract = null;
 var web3 = null;
-
-const Web3Alc = createAlchemyWeb3("https://eth-rinkeby.alchemyapi.io/v2/8AX5AP2TU6G45ctsOXNt8K4Fz_BkhhZG");
 
 const moralisapikey = "2VBV4vaCLiuGu6Vu7epXKlFItGe3jSPON8WV4CrXKYaNBEazEUrf1xwHxbrIo1oM";
 const bscscanapikey = "DBQX5JUSAVUZRK8CC4IN2UZF9N2HA63P4U";
@@ -35,10 +32,10 @@ const providerOptions = {
 	walletlink: {
 		package: WalletLink, 
 		options: {
-		  appName: "Net2Dev NFT Minter", 
+		  appName: "BETTA NFT Minter", 
 		  infuraId: "3cf2d8833a2143b795b7796087fff369",
 		  rpc: "", 
-		  chainId: 4, 
+		  chainId: 56, 
 		  appLogoUrl: null, 
 		  darkMode: true 
 		}
@@ -46,7 +43,7 @@ const providerOptions = {
 };
 
 const web3Modal = new Web3Modal({
-	network: "Binance",
+	network: "binance",
 	theme: "dark",
 	cacheProvider: true,
 	providerOptions 
@@ -93,6 +90,7 @@ class App extends Component {
 render() {
 	const {balance} = this.state;
 	const {outvalue} = this.state;
+  const {nftdata} = this.state;
   
 
   const sleep = (milliseconds) => {
@@ -109,7 +107,6 @@ render() {
     account = accounts[0];
     document.getElementById('wallet-address').textContent = account;
     contract = new web3.eth.Contract(ABI, NFTCONTRACT);
-   }
     function delay() {
       return new Promise(resolve => setTimeout(resolve, 300));
     }
@@ -124,59 +121,12 @@ render() {
         await delayedLog(item);
       }
     }
-    return processArray([rwdArray]);
   }
 
-  }
-    async function delayedLog(item) {
-      await delay();
-      var sum = item.reduce((a, b) => a + b, 0);
-      var formatsum = Number(sum).toFixed(2);
-      document.getElementById('earned').textContent = formatsum;
-    }
-    async function processArray(rwdArray) {
-      for (const item of rwdArray) {
-        await delayedLog(item);
-      }
-    }
-    return processArray([rwdArray]);
-  }
-  async function claimit() {
-    var rawnfts = await vaultcontract.methods.tokensOfOwner(account).call();
-    const arraynft = Array.from(rawnfts.map(Number));
-    const tokenid = arraynft.filter(Number);
-    await Web3Alc.eth.getMaxPriorityFeePerGas().then((tip) => {
-      Web3Alc.eth.getBlock('pending').then((block) => {
-        var baseFee = Number(block.baseFeePerGas);
-        var maxPriority = Number(tip);
-        var maxFee = maxPriority + baseFee;
-        tokenid.forEach(async (id) => {
-          await vaultcontract.methods.claim([id])
-            .send({
-              from: account,
-              maxFeePerGas: maxFee,
-              maxPriorityFeePerGas: maxPriority
-            })
-        })
-      });
-    })
-  }
   async function mintnative() {
     var _mintAmount = Number(outvalue);
     var mintRate = Number(await contract.methods.cost().call());
     var totalAmount = mintRate * _mintAmount;
-    await Web3Alc.eth.getMaxPriorityFeePerGas().then((tip) => {
-        Web3Alc.eth.getBlock('pending').then((block) => {
-            var baseFee = Number(block.baseFeePerGas);
-            var maxPriority = Number(tip);
-            var maxFee = baseFee + maxPriority
-        contract.methods.mint(account, _mintAmount)
-            .send({ from: account,
-              value: String(totalAmount),
-              maxFeePerGas: maxFee,
-              maxPriorityFeePerGas: maxPriority});
-        });
-    })
   }
 
   async function mint0() {
@@ -186,8 +136,8 @@ render() {
     var mintRate = await contract.methods.getNFTCost(_pid).call();
     var _mintAmount = Number(outvalue);
     var totalAmount = mintRate * _mintAmount;
-    await Web3Alc.eth.getMaxPriorityFeePerGas().then((tip) => {
-      Web3Alc.eth.getBlock('pending').then((block) => {
+    await Web3.eth.getMaxPriorityFeePerGas().then((tip) => {
+      Web3.eth.getBlock('pending').then((block) => {
         var baseFee = Number(block.baseFeePerGas);
         var maxPriority = Number(tip);
         var maxFee = maxPriority + baseFee;
@@ -231,23 +181,14 @@ const refreshPage = ()=>{
 
   return (
     <div className="App nftapp">
-        <nav class="navbar navbarfont navbarglow navbar-expand-md navbar-dark bg-dark mb-4">
+        <nav class="navbar navbarfont navbarglow navbar-expand-lg navbar-dark bg- mb-4">
           <div class="container-fluid" style={{ fontFamily: "SF Pro Display" }}>
-            <a class="navbar-brand px-5" style={{ fontWeight: "800", fontSize: '25px' }} href="#"></a><img src="n2d-logo.png" width="7%" />
+            <a class="navbar-brand px-5" style={{ fontWeight: "800", fontSize: '25px' }} width="7%" />
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
               <ul class="navbar-nav me-auto mb-2 px-3 mb-md-0" style={{ fontSize: "25px" }}>
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">List NFTs</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link">Bridge NFTs</a>
-                </li>
               </ul>
             </div>
           </div>
@@ -255,15 +196,15 @@ const refreshPage = ()=>{
             <input id="connectbtn" type="button" className="connectbutton" onClick={connectwallet} style={{ fontFamily: "SF Pro Display" }} value="Connect Your Wallet" />
           </div>
         </nav>
-        <div className='container container-style'>
-          <div className='col'>
+        <div className='container'>
+          <div className='col-md'>
             <body className='nftminter'>
           <form>
             <div className="row pt-3">
               <div>
-                <h1 className="pt-2" style={{ fontWeight: "30" }}>NFT Minter</h1>
+                <h1 className="pt-2" style={{ fontWeight: "30" }}>Mint Your Own Betta NFTs!</h1>
               </div>
-              <h3>{balance.result}/1000</h3>
+              <h3>{balance.result}/10000</h3>
               <h6>Your Wallet Address</h6>
               <div className="pb-3" id='wallet-address' style={{
                 color: "#39FF14",
@@ -273,8 +214,9 @@ const refreshPage = ()=>{
                 <label for="floatingInput">Please Connect Wallet</label>
               </div>
             </div>
+            <img src={process.env.PUBLIC_URL + '/small.gif'} height="250" width="250"></img>
             <div>
-              <label style={{ fontWeight: "300", fontSize: "18px" }}>Select NFT Quantity</label>
+              <label style={{ fontWeight: "400", fontSize: "38px" }}>How Many NFTs Will You Mint?</label>
             </div>
             <ButtonGroup size="lg"
               aria-label="First group"
@@ -288,53 +230,32 @@ const refreshPage = ()=>{
               <Button value="4">4</Button>
               <Button value="5">5</Button>
             </ButtonGroup>
-            <h6 className="pt-2" style={{ fontFamily: "SF Pro Display", fontWeight: "300", fontSize: "18px" }}>Buy with your preferred crypto!</h6>
+            <h6 className="pt-2" style={{ fontFamily: "SF Pro Display", fontWeight: "400", fontSize: "38px" }}>Mint with $BNB for 0.2 coins or $BETTA for 33 billion tokens (a 60% discount!)  </h6>
             <div className="row px-2 pb-2 row-style">
-              <div className="col ">
-                <Button className="button-style" onClick={mint0} style={{ border: "0.2px", borderRadius: "14px", boxShadow: "1px 1px 5px #000000" }}>
-                  <img src={"n2dr-logo.png"} width="100%" />
-                </Button>
-              </div>
               <div className="col">
-                <Button className="button-style" style={{ border: "0.2px", borderRadius: "14px", boxShadow: "1px 1px 5px #000000" }}>
-                  <img src="usdt.png" width="70%" />
+                <Button className="button-style" onClick={mint0} style={{ border: "0.2px", borderRadius: "14px", boxShadow: "1px 1px 5px #000000" }}>
+                <img src={process.env.PUBLIC_URL + '/betta.png'} width="25%" />
                 </Button>
               </div>
               <div className="col">
                 <Button className="button-style" onClick={mintnative} style={{ border: "0.2px", borderRadius: "14px", boxShadow: "1px 1px 5px #000000" }}>
-                  <img src="matic.png" width="70%" />
+                <img src={process.env.PUBLIC_URL + '/bnb.png'} width="25%" />
                 </Button>
               </div>
               <div>
                 <label id='txout' style={{ color: "#39FF14", marginTop: "5px", fontSize: '20px', fontWeight: '500', textShadow: "1px 1px 2px #000000" }}>
                   <p style={{ fontSize: "20px" }}>Transfer Status</p>
-                </label>
-              </div>
-            </div>
-          </form>
-          </body>
-          </div>
-                    </div>
-                  </div>
+                  </label>
                 </div>
+              </div>
             </form>
           </body>
         </div>
       </div>
-      <div className='row nftportal mt-3'>
-        <div className='col mt-4 ml-3'>
-        <img src="polygon.png" width={'60%'}></img>
       </div>
-      <div className='col'>
-        <h1 className='n2dtitlestyle mt-3'>Your NFT Portal</h1>
-      <Button onClick={refreshPage} style={{ backgroundColor: "#000000", boxShadow: "1px 1px 5px #000000" }}>Refresh NFT Portal</Button>
-      </div>
-      <div className='col mt-3 mr-5'>
-      <img src="ethereum.png" width={'60%'}></img>
-      </div>
-      </div>
-      </div>
-    )
-  }
+    );
+  };
 }
+
 export default App;
+
