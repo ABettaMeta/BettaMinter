@@ -76,7 +76,7 @@ class App extends Component {
             console.log(outputa.data)
         })
 		let config = {'X-API-Key': moralisapikey, 'accept': 'application/json'};
-		await axios.get((moralisapi + `/nft/${NFTCONTRACT}/owners?chain=mumbai&format=decimal`), {headers: config})
+		await axios.get((moralisapi + `/nft/${NFTCONTRACT}/owners?chain=binance&format=decimal`), {headers: config})
 		.then(outputb => {
 			const { result } = outputb.data
             this.setState({
@@ -96,8 +96,6 @@ render() {
   const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
   }
-
-  const expectedBlockTime = 10000;
 
   async function connectwallet() {
     var provider = await web3Modal.connect();
